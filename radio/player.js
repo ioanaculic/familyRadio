@@ -1,22 +1,13 @@
 "use strict";
 var Media = require('simple-mplayer');
-var events = require('events');
-var util = require('util');
 
-module.exports = function Player(song)
+function play(song)
 {
-	events.EventEmitter.call(this);
-	this.music = new Media(song);
-}
-util.inherits(module.exports, events.EventEmitter);
-module.exports.prototype.play = function()
-{
-	this.music.play();
-	this.music
+	var music = new Media(song);
+	music.play();
+	music.on('terminate',function(){
+		nextSong();
+	});
 }
 
-function stop(music)
-{
-
-}
-
+exports.play = play;

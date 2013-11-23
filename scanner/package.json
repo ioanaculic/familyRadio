@@ -1,0 +1,7 @@
+{
+	"name":"radio",
+	"description":"family radio",
+	"version":"0.0.1",
+	"private":"true",
+	"dependencies":{"echojs":"*", "node-mysql":"*"}
+}
