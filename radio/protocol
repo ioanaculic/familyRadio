@@ -1,0 +1,23 @@
+-> /status - GET
+<- {status: configure}
+<- {status: running, name:}
+
+-> /configure - POST
+	{name:}
+<- 200/404
+
+-> /add_user -POST
+	{name:"", id:""}
+<- 200/404
+
+-> /rename_user -POST
+	{name:"", id:""}
+<- 200/404
+
+-> /add_song- UPLOAD
+	{id:"", file:{...}}
+<- 200/404
+
+->list_song - GET
+<- 200/404, [{song:}]
+
