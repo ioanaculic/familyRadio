@@ -24,6 +24,6 @@
 ->/next/user - GET
 <-200/400
 
-->/get_song - GET
+->/get_song/user - GET
 	{name:}
 <- 200/404
