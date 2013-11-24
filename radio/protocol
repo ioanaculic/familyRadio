@@ -21,7 +21,7 @@
 ->list_song - GET
 <- 200/404, [{song:}]
 
-->/next - GET
+->/next/user - GET
 <-200/400
 
 ->/get_song - GET
