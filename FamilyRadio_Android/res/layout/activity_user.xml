@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    
+    <TextView
+        android:id="@+id/title_activity_music"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dip"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/username"
+        />
+	
+    <EditText
+        android:id="@+id/input_name_activity_music"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_activity_music"
+        android:cacheColorHint="#00000000"
+        android:background="#ffffff"
+        android:layout_margin="50dip"
+        android:hint="@string/enter_name">
+    </EditText>
+    
+    <Button
+        android:id="@+id/done_activity_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_name_activity_music"
+        android:layout_centerHorizontal="true"
+        android:padding="10dip"
+        android:text="@string/done"
+        />
+
+</RelativeLayout>

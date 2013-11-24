@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FamilyRadio</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="next">Next</string>
+    <string name="title_activity_music">MusicActivity</string>
+    <string name="stations">Music stations</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="username">Username</string>
+    <string name="enter_name">Please enter your name</string>
+    <string name="done">Done</string>
+    <string name="leave">Leave</string>
+
+</resources>
