@@ -14,6 +14,8 @@ var app = express();
 var status = require('./status.js');
 var user = require('./user.js');
 var songs = require('./songs.js');
+var scanner = require('./scanner');
+var player = require('./player');
 
 var mysql = require('node-mysql/node_modules/mysql');
 
@@ -63,10 +65,16 @@ function connect(sendResponse)
 	sendResponse(connection);
 }
 
+scanner.init(connect);
+
 app.listen(8080);
 console.log('listenint on port 80');
 status.routes(app);
 user.routes(app);
 songs.routes(app);
+player.routes(app);
 
 exports.connect = connect;
+scanner.nextSong(function(song){
+	player.play(song);
+});

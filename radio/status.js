@@ -3,6 +3,7 @@ var OK = 200;
 var NOT_OK = 404;
 var fs = require('fs');
 var CONFIGURE = 'configure';
+var scanner = require('./scanner.js');
 
 var CONF1 = '<?xml version=\"1.0\" standalone=\'no\'?><!--*-nxml-*-->\n\
 <!DOCTYPE service-group SYSTEM "avahi-service.dtd">\n\
@@ -30,29 +31,32 @@ function getName(path, sendName)
  	}
 });
 }
+
+var radioName;
 	
 function configureRadio(name, sendResult)
 {
+	radioName = name;
 	var fileData = {name:name};
 
-	fs.writeFile(CONFIGURE, JSON.stringify(fileData), function(err){
-	    if(err)
-	      sendResult(NOT_OK);
-	    else 
-	    {
-	    	fs.writeFile('/etc/avahi/services/famradio.service',CONF1+name+CONF2, function(err){
-	    		if(err)
-	    			sendResult(NOT_OK);
-	    		else
-	    			sendResult(OK);
-	    	});
-	    }	      
+	fs.writeFile('/etc/avahi/services/famradio.service',CONF1+name+CONF2, function(err){
+		if(err)
+			sendResult(NOT_OK);
+		else
+		{
+			fs.writeFile(CONFIGURE, JSON.stringify(fileData), function(err){
+		    if(err)
+		      sendResult(NOT_OK);
+		    else
+				sendResult(OK);});
+		}     
 	}); 
 }
 
 function routes(app)
 {
 	app.get('/status', function(req, res){
+		console.log('status');
 		fs.exists(CONFIGURE,function(exists){
 			if(exists)
 			{
@@ -73,6 +77,17 @@ function routes(app)
 			res.send(code);
 		});		
 	});
+
+	app.post('/online',function(req,res){
+		var name = req.body.name;
+		scanner.userOnline(name);
+	});
+
+	app.post('./offline',function(req,res){
+		var name = req.body.name;
+		scanner.userOffline(name);
+	});
 }
 
 exports.routes = routes;
+exports.radioName = radioName;

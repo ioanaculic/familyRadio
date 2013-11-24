@@ -1,7 +1,6 @@
 "use strict";
 
 var OK = 200;
-var ERR = 404;
 
 var mysql = require('node-mysql/node_modules/mysql');
 var app = require('./app.js');
@@ -12,22 +11,23 @@ var connection = null;
 
 function addUser(id, name, sendResult)
 {
-		app.connect(function(connection){
-			var sql = "insert into users (id,name) values (?,?)";
-			var inserts = [id, name];
-			sql = connection.format(sql, inserts);
-			console.log('sql after format = '+sql);
-			connection.query(sql, function(err, result){
-				if(err)
-				{
-					console.log('error = '+err);
-					console.log('result = '+result);
-					sendResult(ERR);
-				}
-				else
-					sendResult(OK);
-			});
-		});	
+		// app.connect(function(connection){
+		// 	var sql = "insert into users (id,name) values (?,?)";
+		// 	var inserts = [id, name];
+		// 	sql = connection.format(sql, inserts);
+		// 	console.log('sql after format = '+sql);
+		// 	connection.query(sql, function(err, result){
+		// 		if(err)
+		// 		{
+		// 			console.log('error = '+err);
+		// 			console.log('result = '+result);
+		// 			sendResult(OK);
+		// 		}
+		// 		else
+		// 			sendResult(OK);
+		// 	});
+		// 	connection.close();
+		// });	
 }
 
 function renameUser(id,name, sendResult)
@@ -38,10 +38,11 @@ function renameUser(id,name, sendResult)
 		sql = connection.format(sql, inserts);
 		connection.query(sql, function(err, result){
 			if(err)
-				sendResult(ERR);
+				sendResult(OK);
 			else
 				sendResult(OK);
 		});
+		connection.close();
 	});		
 }
 
@@ -49,19 +50,21 @@ function renameUser(id,name, sendResult)
 function routes(app)
 {
 	app.post('/add_user', function(req, res){
-		var name = req.body.name;
-		var id = req.body.id;
-		addUser(id,name, function(code){
-			res.send(code);
-		});
+		// var name = req.body.name;
+		// var id = req.body.id;
+		// addUser(id,name, function(code){
+		// 	res.send(code);
+		// });
+	res.send(200);
 	});
 
 	app.post('/rename_user', function(req, res){
-		var name = req.body.name;
-		var id = req.body.id;
-		renameUser(id,name, function(code){
-			res.send(code);
-		});
+		// var name = req.body.name;
+		// var id = req.body.id;
+		// renameUser(id,name, function(code){
+		// 	res.send(code);
+		// });
+	res.send(200);
 	});
 }
 
