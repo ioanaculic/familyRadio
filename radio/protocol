@@ -14,10 +14,16 @@
 	{name:"", id:""}
 <- 200/404
 
--> /add_song- UPLOAD
-	{id:"", file:{...}}
+-> /upload/user- UPLOAD
+	{id:"", file:{...}}	
 <- 200/404
 
 ->list_song - GET
 <- 200/404, [{song:}]
 
+->/next - GET
+<-200/400
+
+->/get_song - GET
+	{name:}
+<- 200/404
