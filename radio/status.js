@@ -74,18 +74,22 @@ function routes(app)
 	app.post('/configure', function(req, res){
 		var name = req.body.name;
 		configureRadio(name, function(code){
+			if(code == OK)
+				scanner.radio(req.body.name);
 			res.send(code);
 		});		
 	});
 
-	app.post('/online',function(req,res){
-		var name = req.body.name;
+	app.get('/online/:user',function(req,res){
+		var name = req.params.user;
 		scanner.userOnline(name);
+		res.send(200);
 	});
 
-	app.post('./offline',function(req,res){
-		var name = req.body.name;
+	app.get('/offline/:user',function(req,res){
+		var name = req.params.user;
 		scanner.userOffline(name);
+		res.send(200);
 	});
 }
 

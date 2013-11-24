@@ -8,6 +8,8 @@ var scanner = require('./scanner');
 var music = null;
 var action = null;
 var s = null;
+var user;
+var id;
 
 function routes(app)
 {
@@ -29,6 +31,14 @@ function routes(app)
 			music.stop();
 			//scanner.nextPressed('aksdkf',user)
 		}
+		res.send(200);
+	});
+
+	app.get("/play/:user/:id",function(req,res){
+		action = 'play';
+		user = req.params.user;
+		id = req.params.id;
+		music.stop();
 		res.send(200);
 	});
 
@@ -62,17 +72,17 @@ function routes(app)
 	});
 }
 
-function play(oldSong)
+function play(oldSong,user)
 {
-	console.log("song = "+song);	
-	var song = '../music/'+oldSong+'.mp3';
+	console.log("song = "+oldSong);
 	if(!music)
 	{
+		var song = '../music/'+oldSong+'.mp3';
 		s=oldSong;
-		console.log("!music");
+		console.log("!music"+s);
 		music = new Media(song);
 		music.play();
-		scanner.play(s);
+		scanner.play(s,user);
 		scanner.nextSong(function(song){
 			if(song)
 				play(song);
@@ -85,17 +95,28 @@ function play(oldSong)
 				music = null;
 				songs.splice(0,1);
 				if(songs.length > 0)
+				{
+					s=songs[0];
 					play(songs[0]);
+				}
 				else
 					scanner.nextSong(function(song){
 						play(song);
-						scanner.play(song);
+						s = song;
+						scanner.play(song,user);
 					});
 			}
 			else if(action == 'stop')
 			{
+				scanner.stop(s);
 				songs.splice(0);
 				music = null;
+			}
+			else if(action == 'play')
+			{
+				music = null;
+				songs.splice(0);
+				play(id, user);
 			}
 			else
 			{
@@ -103,6 +124,7 @@ function play(oldSong)
 				if(songs.length > 0)
 				{
 					play(songs[0]);
+					s=songs[0];
 					songs.splice(0,1);
 				}
 			}
@@ -117,7 +139,7 @@ function play(oldSong)
 	}
 	else
 	{
-			songs.push(song);
+			songs.push(oldSong);
 	}	
 }
 // var k=0;

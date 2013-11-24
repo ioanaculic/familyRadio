@@ -11,6 +11,8 @@ var child_process = require ('child_process'),
     html2text = require ('html-to-text'),
     show = require ('./show.js');
 
+var name = "FamilyRadio";
+
 var echoserver = echoprint ({
 	key: 'NXRZR3ZEUQBYXOFUU'
 });
@@ -23,6 +25,11 @@ var MUSIC = '../music/';
 function random (n)
 {
 	return Math.floor((Math.random()*(n-1)));
+}
+
+function radio (n)
+{
+	name = n;
 }
 
 function songsList (songs)
@@ -74,7 +81,7 @@ function song (sno, song)
 function stop ()
 {
 	sendName (name);
-	sendNews ();
+	sendNews ("Online");
 }
 
 function songsForUsers (users, songs)
@@ -133,13 +140,20 @@ function played (songid)
 		});
 }
 
-function play (song)
+function play (songid, userid)
 {
-	console.log (song);
-	redisclient.hgetall (song, function (err, song)
+	console.log ('songid: '+songid);
+	redisclient.hgetall (songid, function (err, song)
 	{
 		if (song)
 		{
+			if (userid)
+			{
+				redisclient.zincrby (userid, -1, songid, function (err)
+				{
+					// console.log (err);
+				});
+			}
 			show.sendName (song.artist+' - '+song.song);
 			show.sendNews ('Reading news ...');
 			echoserver ('artist/news').get ({
@@ -152,7 +166,7 @@ function play (song)
 								{
 									try
 									{
-										var sn = html2text.fromString (json.response.news[0].summary);
+										var sn = json.response.news[0].summary;
 										if (sn.length > 100) sn = sn.substring (0, 100)+'...';
 										show.sendNews (sn);
 									}
@@ -375,11 +389,6 @@ function init ()
 {
 }
 
-songsList (function (list)
-{
-	console.log (list);
-});
-
 /*userOnline ('annutza');
 
 nextSong (function (song)
@@ -405,6 +414,7 @@ exports.userOnline = userOnline;
 exports.userOffline = userOffline;
 exports.play = play;
 exports.song = song;
+exports.stop = stop;
 exports.songsList = songsList;
 exports.nextPressed = nextPressed;
 exports.nextSong = nextSong;
